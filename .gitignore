@@ -1,0 +1,8 @@
+node_modules/
+dist/
+src/analytics.ts
+src/basics.ts
+src/classes.ts
+src/functions.ts
+src/objs-arrays-enums.ts
+src/union-aliases.ts
