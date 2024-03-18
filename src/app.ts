@@ -105,7 +105,7 @@ function validate(validatableInput: Validatable) {
 }
 
 // autobind decorator
-function Autobind(target: any, methodName: string, descriptor: PropertyDescriptor) {
+function autobind(target: any, methodName: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
     const adjDescriptor: PropertyDescriptor = {
         configurable: true,
@@ -165,12 +165,13 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements 
         this.renderContent();
     }
 
-    @Autobind
+    @autobind
     dragStartHandler(event: DragEvent): void {
-        console.log(event);
+        event.dataTransfer!.setData('text/plain', this.project.id);
+        event.dataTransfer!.effectAllowed = 'move';
     }
 
-    @Autobind
+    @autobind
     dragEndHandler(event: DragEvent): void {
         console.log('DragEnd');
     }
@@ -200,18 +201,21 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> implements Drop
         this.renderContent();
     }
 
-    @Autobind
-    dragOverHandler(_: DragEvent): void {
-        const listEl = this.element.querySelector('ul')!;
-        listEl.classList.add('droppable');
+    @autobind
+    dragOverHandler(event: DragEvent): void {
+        if (event.dataTransfer && event.dataTransfer.types[0] === 'text/plain') {
+            event.preventDefault();
+            const listEl = this.element.querySelector('ul')!;
+            listEl.classList.add('droppable');
+        }
     }
 
-    @Autobind
-    dropHandler(_: DragEvent): void {
-        
+    @autobind
+    dropHandler(event: DragEvent): void {
+        console.log(event);
     }
 
-    @Autobind
+    @autobind
     dragLeaveHandler(_: DragEvent): void {
         const listEl = this.element.querySelector('ul')!;
         listEl.classList.remove('droppable');
@@ -310,7 +314,7 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
         this.peopleInputElement.value = '';
     }
 
-    @Autobind
+    @autobind
     private submitHandler(event: Event) {
         event.preventDefault();
         const userInput = this.gatherUserInput();
