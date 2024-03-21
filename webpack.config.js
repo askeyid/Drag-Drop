@@ -1,6 +1,6 @@
 const path = require('path');
 // npm install --save-dev webpack webpack-cli webpack-dev-server typescript ts-loader
-// npm install --save-dev clean-webpack-plugin - for production webpack.config
+// npm install --save-dev clean-webpack-plugin // for production webpack.config
 module.exports = {
     mode: 'development',
     entry: './src/app.ts',
